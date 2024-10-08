@@ -11,14 +11,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ModeToggle } from "@/components/ui/toggle";
-import { Checkbox, CheckBoxCard } from "@/components/ui/checkbox";
+import { CheckBoxCard } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { CheckIcon, CopyIcon, Cross1Icon, Pencil1Icon, ShuffleIcon } from "@radix-ui/react-icons";
+import { CopyIcon, ShuffleIcon } from "@radix-ui/react-icons";
 import { Textinput } from "./textinput";
 import { Generator } from "@/lib/generate";
-import Check from "./check";
 import StrengthMeter from "./StrengthMeter";
 import { Slider } from "@/components/ui/slider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const COLORS_TOP = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
 
@@ -51,6 +52,25 @@ export default function Home() {
     setPassword(GeneratedPassword);
   }, [settings, settings.length]);
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(password);
+    toast.success("Password copied to clipboard!", {
+      position: "top-center",
+      autoClose: 3000,
+    });
+  };
+
+  const handleGenerate = () => {
+    const newPassword = Generator(settings);
+    setPassword(newPassword);
+    toast.success("New password generated!", {
+      position: "top-center",
+      autoClose: 3000,
+    });
+  };
+
+
+  
   return (
     <motion.section className="relative  min-h-screen place-content-center overflow-hidden  text-gray-200">
       <div className="relative h-[29.5rem] w-[39rem]   sm:mx-auto">
@@ -87,7 +107,7 @@ export default function Home() {
             />
             <div>
               <CheckBoxCard
-                label="Capital letters"
+                label="Capital letters" 
                 id="uppercase"
                 defaultChecked={settings.uppercase}
                 onCheckedChange={() => setSettings({ ...settings, uppercase: !settings.uppercase })}
@@ -105,17 +125,20 @@ export default function Home() {
                 onCheckedChange={() => setSettings({ ...settings, symbols: !settings.symbols })}
               />
             </div>
-            <Button variant="outline" onClick={() => navigator.clipboard.writeText(password)}>
+            <Button variant="outline" onClick={handleCopy}>
               <CopyIcon className="w-4 h-4 mr-2" />
               Copy
             </Button>
-            <Button onClick={() => setPassword(GeneratedPassword)}>
+            <Button onClick={handleGenerate}>
               <ShuffleIcon className="w-4 h-4 mr-2" />
               Generate
             </Button>
           </CardContent>
         </Card>
       </div>
+
+      {/* React Toastify container */}
+      <ToastContainer />
     </motion.section>
   );
 }

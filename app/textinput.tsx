@@ -60,14 +60,14 @@ export function Textinput({ password, setPassword, onSave, ...props }: TextField
                 onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
                 className="font-semibold tracking-widest w-[32.5rem] "
             />
-            <Button
+            {/* <Button
                 variant="outline"
                 size="icon"
                 ref={editBtnRef}
                 onClick={editMode ? onEditHandler : openEditMode}
             >
                 {editMode ? <Icon.check className="w-4 h-4" /> : <Icon.pencil className="w-4 h-4" />}
-            </Button>
+            </Button> */}
         </div>
     )
 }
